@@ -39,8 +39,8 @@ function Tayment() {
   const navigate = useNavigate();
 
   const productOptions = [
-    { id: 1, title: " ১ টি গ্লুটাথাইয়ন ক্রীম   ", price: 650, quantity: 1 },
-    { id: 2, title: "২ টি গ্লুটাথাইয়ন ক্রীম          " , price: 1150, quantity: 2 },
+    { id: 1, title: " ১ টি গ্লুটাথাইয়ন ক্রীম   ", price: 5000, quantity: 1 },
+    { id: 2, title: "২ টি গ্লুটাথাইয়ন ক্রীম          " , price: 1000, quantity: 2 },
   ];
 
   const [selectedProduct, setSelectedProduct] = useState(productOptions[0]);
