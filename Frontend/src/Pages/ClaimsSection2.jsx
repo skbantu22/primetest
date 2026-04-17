@@ -153,7 +153,7 @@ function ClaimsSection2() {
             {/* Content group */}
             <div>
               <h3 className="text-2xl font-bold text-black text-center">১ টি গ্লোটাথায়ন</h3>
-              <p className="text-2xl font-bold text-red-600 text-center my-2">৬৫০ টাকা</p>
+              <p className="text-2xl font-bold text-red-600 text-center my-2">৫০০ টাকা</p>
               <p className="text-xl font-bold text-black text-center line-through">পূর্বের মূল্য ৯৫০ টাকা</p>
             </div>
             {/* Button */}
@@ -172,7 +172,7 @@ function ClaimsSection2() {
             {/* Content group */}
             <div>
               <h3 className="text-2xl font-bold text-black text-center">২ টি গ্লোটাথায়ন ক্রীম</h3>
-              <p className="text-2xl font-bold text-red-600 text-center my-2">১,১৫০ টাকা</p>
+              <p className="text-2xl font-bold text-red-600 text-center my-2">১০০০ টাকা </p>
               <p className="text-xl font-bold text-black text-center line-through">পূর্বের মূল্য ১৬০০ টাকা</p>
             </div>
             {/* Button */}
