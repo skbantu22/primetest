@@ -1,7 +1,6 @@
 import logo from './logo.png'
 import add_icon from './add_icon.png'
 import ads_photo from './ads.jpg'
-
 import order_icon from './order_icon.png'
 import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.svg'
@@ -21,9 +20,10 @@ import Photo4 from './Photo4.jpg'
 import Photo5 from './Photo5.jpg'
 import Photo6 from './Photo6.webp'
 import Photo7 from './Photo7.gif'
-import Photo9 from './Photo9.webp'
+import Photo9 from './photo9.webp'
 import ads2 from './Ads2.jpg'
 import Photo2 from './Ads2.jpg'
+import Photo1 from './photo1.webp'
 export const assets = {
     logo,
     add_icon,
@@ -43,6 +43,7 @@ export const assets = {
     page12,
     page13,
    ads_photo,
+   Photo1,
  Photo2 ,
  Photo4 ,
  Photo5 ,
