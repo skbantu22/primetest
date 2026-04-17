@@ -21,7 +21,6 @@ const Orderconfirm = ({ orderData }) => {
       {/* Header */}
       <div className="w-full max-w-2xl bg-white p-8 pt-10 shadow-md border-t-4 border-indigo-600 mt-10 rounded-lg">
         <div className="text-center mb-6">
-          <div className="text-2xl font-bold text-gray-800 mb-2">My Logo</div>
           <h1 className="text-4xl font-light text-gray-800 mt-0 mb-4">Thank you</h1>
           <p className="text-gray-600 text-sm italic">
             Your order is confirmed. You will receive an email shortly.
