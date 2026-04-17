@@ -4,9 +4,11 @@ import Navbar from "./Component/Navbar";
 import Login from "./Pages/Login";
 import Sidebar from "./Pages/Sidebar";
 import Footer from "./Component/Footer";
+
+
 import axios from "axios";
 
-export const backendURL = import.meta.env.VITE_BACKEND_URL;
+export const backendURL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");

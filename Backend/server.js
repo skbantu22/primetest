@@ -1,30 +1,36 @@
+// server.js
 import express from "express";
 import session from "express-session";
 import cors from "cors";
 import dotenv from "dotenv";
-import rateLimit from "express-rate-limit";
 import MongoStore from "connect-mongo";
 
-import userRoutes from "./routes/userRoutes.js";
+import connectDB from "./config/db.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import adminRoute from "./routes/adminRoute.js";
 import metaRoute from "./routes/metaRoute.js";
-import connectDB from "./config/db.js";
-
+import statusRoutes from "./routes/statusRoutes.js";
+import productRoutes from "./routes/productRoutes.js"; // if you add products
+import shippingRoutes from "./routes/shippingRoutes.js";
+// Load environment variables
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+
+// ----------------- Middleware -----------------
+app.use(express.json()); // parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // parse URL-encoded bodies
 
 // ----------------- CORS -----------------
 const allowedOrigins = [
-   "http://localhost:5173",
+  "http://localhost:5173",
   process.env.FRONTEND_URL || "http://localhost:5174",
   `https://www.${process.env.FRONTEND_URL || "primehealthcare202.cloud"}`
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // Postman/curl
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // Allow Postman/curl
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -35,40 +41,45 @@ app.use(cors({
 }));
 
 // ----------------- Trust Proxy -----------------
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 // ----------------- Session -----------------
-app.use(session({
-  secret: process.env.SESSION_SECRET || "supersecretkey",
-  resave: false,
-  saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { 
-    maxAge: 30 * 60 * 1000,
-    secure: process.env.NODE_ENV === 'production', 
-    httpOnly: true
-  }
-}));
 
-// ----------------- Rate Limiter -----------------
-const limiter = rateLimit({
-  windowMs: 60 * 1000, // 1 min
-  max: 10,             // adjust for production
-  message: { success: false, message: "Too many requests. Try later." }
-});
-app.use("/api/users", limiter);
 
 // ----------------- Routes -----------------
-app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoute);
 app.use("/api/meta", metaRoute);
+app.use("/api/statuses", statusRoutes);
+app.use("/api/products", productRoutes); // add products routes
+app.use("/api/shipping", shippingRoutes);
 
+// ----------------- Default Route -----------------
 app.get("/", (req, res) => {
   res.send("🚀 API is running...");
 });
 
-// ----------------- DB & Server -----------------
-connectDB().then(() => {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// ----------------- 404 Handler -----------------
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
 });
+
+// ----------------- Global Error Handler -----------------
+app.use((err, req, res, next) => {
+  console.error("❌ Error:", err.stack || err.message);
+  res.status(err.status || 500).json({
+    error: err.message || "Internal Server Error",
+  });
+});
+
+// ----------------- Connect DB & Start Server -----------------
+const PORT = process.env.PORT || 5000;
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch(err => {
+    console.error("❌ DB connection failed:", err.message);
+    process.exit(1);
+  });

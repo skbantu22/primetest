@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 
 const counterSchema = new mongoose.Schema({
-  _id: { type: String, required: true }, // "orderNumber"
-  seq: { type: Number, default: 1000 }, // start from 1000
+  id: { type: String, required: true },
+  seq: { type: Number, default: 0 }
 });
 
-export default mongoose.model("Counter", counterSchema);
+const Counter = mongoose.model("Counter", counterSchema);
+export default Counter;

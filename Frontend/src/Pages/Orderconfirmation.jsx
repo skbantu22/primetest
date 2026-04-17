@@ -7,13 +7,14 @@ function Orderconfirmation({ order }) {
   }
 
   const total = Number(order.total) || 0;
-  const subtotal = total; // use total as subtotal if not provided
-  const shipping = order.shipping || "Free";
+  const subtotal = Number(order.total) - (order.shipping || 0);
+  const shipping = order.shipping || 0;
 
   // Convert MongoDB _id to human-readable order number
-  const humanOrderNumber = order.orderNumber
-    ? order.orderNumber
-    : `ORD-${new Date(order.date).getFullYear()}${order._id.slice(-6).toUpperCase()}`;
+ const humanOrderNumber = order.orderNumber
+  ? `ORD-${order.orderNumber}` // Add prefix if you like
+  : `ORD-${new Date(order.createdAt).getFullYear()}${order._id.slice(-6).toUpperCase()}`;
+
 
   const shareUrl = window.location.href;
 
@@ -49,6 +50,21 @@ function Orderconfirmation({ order }) {
             Your order is confirmed. You will receive an email shortly.
           </p>
         </div>
+        <div className="mt-6 text-center">
+        {/* Updated checkmark icon */}
+        <div className="w-12 h-12 mx-auto">
+          <img 
+            src="https://i.ibb.co/ynC2GCzt/correct.png" 
+            alt="correct" 
+            className="w-full h-full object-contain" 
+          />
+        </div>
+        <h2 className="text-xl font-semibold mt-4">আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h2>
+        <p className="mt-2 text-gray-600">
+          আপনার অর্ডার গ্রহন করা হয়েছে এবং প্রক্রিয়াকরণ চলমান রয়েছে। অর্ডার সম্পর্কিত বিস্তারিত তথ্য নিচে দেওয়া হল:
+        </p>
+      </div>
+
 
         <div className="p-5 bg-indigo-50 border border-indigo-200 rounded-lg mb-8">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -62,7 +78,7 @@ function Orderconfirmation({ order }) {
             </div>
             <div>
               <p className="font-semibold">Date:</p>
-              <p>{new Date(order.date).toLocaleString()}</p>
+              <p>{new Date(order.createdAt).toLocaleString()}</p>
             </div>
             <div>
               <p className="font-semibold">Total:</p>
@@ -71,7 +87,7 @@ function Orderconfirmation({ order }) {
           </div>
 
           <p className="text-sm text-gray-700">
-            <span className="font-semibold">Payment method:</span> {order.paymentMethod}
+            <span className="font-semibold">Payment method:</span> {order.payment || "Cash on delivery"}
           </p>
         </div>
 
@@ -88,7 +104,7 @@ function Orderconfirmation({ order }) {
             <span>
               {order.product} × {order.quantity}
             </span>
-            <span>৳{total.toFixed(2)}</span>
+            <span>৳{subtotal.toFixed(2)}</span>
           </div>
 
           <div className="space-y-1 mt-4 pt-4 border-t border-gray-300">
@@ -98,7 +114,7 @@ function Orderconfirmation({ order }) {
             </div>
             <div className="flex justify-between text-sm text-gray-700">
               <span>Shipping:</span>
-              <span>{shipping}</span>
+              <span>৳{shipping}</span>
             </div>
             <div className="flex justify-between text-base font-bold text-gray-800">
               <span>Total:</span>
@@ -107,20 +123,24 @@ function Orderconfirmation({ order }) {
           </div>
         </div>
 
-        {/* Billing & Shipping */}
+        {/* Billing & Shipping (flat data) */}
         <div className="flex border-t border-gray-300 pt-6">
           <div className="w-1/2 pr-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">Billing address</h3>
             <div className="text-sm text-gray-700 space-y-1">
-              <p>{order.billingAddress?.name}</p>
-              <p>{order.billingAddress?.addressLine1}</p>
-              <p>{order.billingAddress?.phone}</p>
+              <p>{order.name}</p>
+              <p>{order.address}</p>
+              <p>{order.phone}</p>
             </div>
           </div>
 
           <div className="w-1/2 pl-4 border-l border-gray-200">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">Shipping address</h3>
-            <p className="text-sm text-gray-700">{order.shippingAddress}</p>
+            <div className="text-sm text-gray-700 space-y-1">
+              <p>{order.name}</p>
+              <p>{order.address}</p>
+              <p>{order.phone}</p>
+            </div>
           </div>
         </div>
       </div>
